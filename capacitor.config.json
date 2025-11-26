@@ -1,0 +1,9 @@
+{
+  "appId": "com.example.myapp",
+  "appName": "Checkin",
+  "webDir": "www",
+  "server": {
+    "url": "https://checkin-ten-gamma.vercel.app/",
+    "cleartext": true
+  }
+}
