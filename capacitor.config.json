@@ -1,9 +1,9 @@
 {
-  "appId": "com.example.myapp",
-  "appName": "Checkin",
-  "webDir": "www",
+  "appId": "com.checkin.app",
+  "appName": "Checkin App",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
   "server": {
-    "url": "https://checkin-ten-gamma.vercel.app/",
-    "cleartext": true
+    "androidScheme": "https"
   }
 }
