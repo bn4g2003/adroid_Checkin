@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getDb } from '../lib/firebaseClient';
 import { Clock, Calendar, FileText, Send, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '../components/ui/useToast';
-import EmployeeNavbar from '../components/employee/EmployeeNavbar';
+import BottomNav from '../components/employee/BottomNav';
 
 export default function OTRegistrationPage() {
   const navigate = useNavigate();
@@ -148,11 +148,11 @@ export default function OTRegistrationPage() {
 
   return (
     <>
-      <EmployeeNavbar />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 pb-24 p-4">
         <div className="max-w-6xl mx-auto space-y-6">
           {/* Header */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="relative backdrop-blur-xl bg-white/90 border border-white/40 rounded-3xl shadow-2xl overflow-hidden p-6">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-purple-50/50 pointer-events-none" />
             <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
               <Clock className="text-indigo-600" />
               Overtime (OT) Registration
@@ -162,7 +162,8 @@ export default function OTRegistrationPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Registration Form */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="relative backdrop-blur-xl bg-white/90 border border-white/40 rounded-3xl shadow-xl overflow-hidden p-6">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-50/30 to-transparent pointer-events-none" />
               <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <Send className="text-indigo-600" />
                 New OT Registration
@@ -257,16 +258,20 @@ export default function OTRegistrationPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full relative backdrop-blur-xl bg-gradient-to-br from-blue-500 to-purple-600 border border-white/30 rounded-2xl shadow-xl p-4 text-white font-bold disabled:opacity-50 active:scale-95 transition-transform"
                 >
-                  <Send size={18} />
-                  {loading ? 'Submitting...' : 'Submit Registration'}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none rounded-2xl" />
+                  <div className="relative flex items-center justify-center gap-2">
+                    <Send size={18} />
+                    <span>{loading ? 'Submitting...' : 'Submit Registration'}</span>
+                  </div>
                 </button>
               </form>
             </div>
 
             {/* OT Requests History */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="relative backdrop-blur-xl bg-white/90 border border-white/40 rounded-3xl shadow-xl overflow-hidden p-6">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-50/30 to-transparent pointer-events-none" />
               <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <FileText className="text-indigo-600" />
                 OT Registration History
@@ -321,6 +326,8 @@ export default function OTRegistrationPage() {
           </div>
         </div>
       </div>
+      
+      <BottomNav />
     </>
   );
 }

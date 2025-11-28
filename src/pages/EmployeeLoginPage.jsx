@@ -48,38 +48,62 @@ export default function EmployeeLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <form onSubmit={handleSubmit} className="w-full max-w-sm bg-white rounded-xl shadow-lg p-6 space-y-5">
-        <h1 className="text-2xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-600">Employee Login</h1>
-        <div>
-          <label className="text-sm font-medium text-gray-700 flex items-center mb-1"><User size={16} className="mr-1"/>Employee ID</label>
-          <input
-            type="text"
-            value={employeeId}
-            onChange={(e) => setEmployeeId(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
-            placeholder="e.g., NV001"
-            required
-          />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4">
+      <form onSubmit={handleSubmit} className="w-full max-w-sm">
+        <div className="relative backdrop-blur-2xl bg-white/90 border border-white/40 rounded-3xl shadow-2xl overflow-hidden p-8">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-purple-50/50 pointer-events-none" />
+          
+          <div className="relative space-y-6">
+            <div className="text-center">
+              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                <User size={40} className="text-white" />
+              </div>
+              <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+                Welcome Back
+              </h1>
+              <p className="text-gray-600 text-sm mt-2">Sign in to continue</p>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-gray-700 flex items-center mb-2">
+                  <User size={16} className="mr-1"/>Employee ID
+                </label>
+                <input
+                  type="text"
+                  value={employeeId}
+                  onChange={(e) => setEmployeeId(e.target.value)}
+                  className="w-full px-4 py-3 bg-white/80 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                  placeholder="e.g., NV001"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-700 flex items-center mb-2">
+                  <Lock size={16} className="mr-1"/>Password
+                </label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 bg-white/80 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full relative backdrop-blur-xl bg-gradient-to-br from-blue-500 to-purple-600 border border-white/30 rounded-2xl shadow-xl p-4 text-white font-bold disabled:opacity-50 active:scale-95 transition-transform"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none rounded-2xl" />
+              <span className="relative">{loading ? 'Logging in...' : 'Login'}</span>
+            </button>
+          </div>
         </div>
-        <div>
-          <label className="text-sm font-medium text-gray-700 flex items-center mb-1"><Lock size={16} className="mr-1"/>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
-            placeholder="Enter your password"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition disabled:opacity-50"
-        >
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
       </form>
     </div>
   );

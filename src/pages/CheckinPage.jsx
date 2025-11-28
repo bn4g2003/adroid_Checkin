@@ -17,7 +17,7 @@ import {
   Award // Added for check-out popup
 } from 'lucide-react';
 import { useToast } from '../components/ui/useToast.js'; // Added for toast notifications
-import EmployeeNavbar from '../components/employee/EmployeeNavbar.jsx';
+import BottomNav from '../components/employee/BottomNav.jsx';
 // import { put } from '@vercel/blob'; // Temporarily disabled
 
 export default function EmployeeCheckin() {
@@ -596,289 +596,228 @@ return date.toLocaleString('en-US');
 
   return (
     <>
-      <EmployeeNavbar />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 w-full">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white">
-              <h1 className="text-3xl font-bold text-center">Employee Check-in System</h1>
-            </div>
+      <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 pb-28">
+        {/* Header with Time */}
+        <div className="relative backdrop-blur-xl bg-white/10 border-b border-white/20 px-6 py-8">
+          <div className="text-center text-white">
+            <div className="text-6xl font-bold mb-2 drop-shadow-lg tracking-tight">{formatTime(currentTime)}</div>
+            <div className="text-sm opacity-90 font-medium">{formatDate(currentTime)}</div>
+          </div>
+        </div>
 
-          {/* Time */}
-          <div className="bg-indigo-50 p-6 text-center border-b">
-            <div className="text-4xl font-bold text-indigo-900 mb-2">{formatTime(currentTime)}</div>
-            <div className="text-indigo-600">{formatDate(currentTime)}</div>
+        <div className="px-6 py-6 space-y-6">
+          {/* Employee Info - Compact */}
+          <div className="relative backdrop-blur-xl bg-white/90 border border-white/40 rounded-3xl shadow-xl overflow-hidden p-5">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-purple-50/50 pointer-events-none" />
+            <div className="relative flex items-center gap-4">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white shadow-lg">
+                <User size={28} strokeWidth={2.5} />
+              </div>
+              <div className="flex-1">
+                <div className="text-xs text-gray-500 mb-0.5 uppercase tracking-wide">Employee</div>
+                <div className="font-bold text-xl text-gray-800">{employee.name || 'Not logged in'}</div>
+                <div className="text-sm text-gray-600 font-medium">ID: {employee.id || '-'}</div>
+              </div>
+            </div>
           </div>
 
-          {/* Form */}
-          <div className="p-6 space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <User className="inline mr-2" size={18} /> Employee Name
-              </label>
-              <input
-                type="text"
-                value={employee.name}
-                onChange={(e) => setEmployee({ ...employee, name: e.target.value })}
-                disabled={!!employeesMap[employee.id]}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter employee name"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <User className="inline mr-2" size={18} /> Employee ID
-              </label>
-              <input
-                type="text"
-                value={employee.id}
-                onChange={(e) => {
-                  const newId = e.target.value.trim().toUpperCase();
-                  const emp = employeesMap[newId];
-                  setEmployee(prev => ({ ...prev, id: newId, name: emp?.fullName || prev.name }));
-                }}
-                disabled={!!employee.id}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter employee ID"
-              />
-            </div>
-
-            {/* Wifi info */}
-            <div className={`p-4 rounded-lg border-2 ${wifiInfo.verified ? 'bg-green-50 border-green-300' : 'bg-orange-50 border-orange-300'}`}>
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center text-gray-700 mb-2">
-                    <Wifi className={wifiInfo.verified ? "text-green-500" : "text-orange-500"} size={20} />
-                    <span className="ml-2 font-medium">WiFi:</span>
-                    <span className="ml-2">{wifiInfo.ssid}</span>
-                    {wifiInfo.verified && <span className="ml-2 text-green-600">✅ Verified</span>}
-                  </div>
-                  <div className="text-sm text-gray-600 space-y-1 bg-white p-2 rounded border">
-                    <div className="flex items-center justify-between">
-<span className="font-medium">🌍 Public IP:</span>
-                      <span className="font-mono text-blue-600 font-bold">{wifiInfo.ip || 'Fetching...'}</span>
+          {/* Status Grid - WiFi & Location */}
+          <div className="grid grid-cols-1 gap-4">
+            {/* WiFi Status */}
+            <div className={`relative backdrop-blur-xl border-2 rounded-3xl shadow-xl overflow-hidden p-5 ${
+              wifiInfo.verified 
+                ? 'bg-green-400/20 border-green-400/50' 
+                : 'bg-orange-400/20 border-orange-400/50'
+            }`}>
+              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+              <div className="relative">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
+                      wifiInfo.verified ? 'bg-green-500' : 'bg-orange-500'
+                    }`}>
+                      <Wifi className="text-white" size={24} strokeWidth={2.5} />
                     </div>
-                    {wifiInfo.localIP && (
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium">🏠 Local IP:</span>
-                        <span className="font-mono">{wifiInfo.localIP}</span>
-                      </div>
-                    )}
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">📶 Connection:</span>
-                      <span>{wifiInfo.connectionType}</span>
+                    <div>
+                      <div className="text-xs text-gray-600 uppercase tracking-wide mb-0.5">Network</div>
+                      <div className="font-bold text-lg text-gray-800">{wifiInfo.ssid}</div>
                     </div>
                   </div>
-                </div>
-                <div className="flex flex-col items-end">
                   <button
                     onClick={detectWifiAndIP}
-                    className="ml-2 text-blue-600 hover:text-blue-800 text-sm font-medium px-3 py-1 bg-blue-50 rounded hover:bg-blue-100 transition"
+                    className="w-10 h-10 rounded-xl bg-white/70 hover:bg-white flex items-center justify-center text-lg transition shadow-md"
                   >
-                    🔄 Refresh
+                    🔄
                   </button>
                 </div>
+                
+                {wifiInfo.verified ? (
+                  <div className="flex items-center gap-2 px-3 py-2 bg-green-500/20 rounded-xl">
+                    <CheckCircle size={18} className="text-green-700" />
+                    <span className="text-sm text-green-700 font-semibold">Verified Network</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 px-3 py-2 bg-orange-500/20 rounded-xl">
+                    <AlertCircle size={18} className="text-orange-700" />
+                    <span className="text-sm text-orange-700 font-semibold">Connect to company WiFi</span>
+                  </div>
+                )}
               </div>
-              {!wifiInfo.verified && (
-                <div className="mt-2 flex items-start text-xs text-orange-700">
-                  <AlertCircle size={14} className="mr-1 mt-0.5" />
-                  <span>WiFi not verified. Please connect to company WiFi or add WiFi to the list.</span>
-                </div>
-              )}
             </div>
 
             {/* Location */}
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <div className="flex items-start text-gray-700">
-                <MapPin className="text-red-500 mt-1" size={20} />
-                <div className="ml-2">
-                  <div className="font-medium">Location:</div>
-                  <div className="text-sm text-gray-600">{location.address || 'Fetching location...'}</div>
-                  {location.lat && location.lng && (
-                    <div className="text-xs text-gray-500 mt-1">Coordinates: {location.lat.toFixed(6)}, {location.lng.toFixed(6)}</div>
-                  )}
+            <div className="relative backdrop-blur-xl bg-white/90 border border-white/40 rounded-3xl shadow-xl overflow-hidden p-5">
+              <div className="absolute inset-0 bg-gradient-to-br from-red-50/30 to-pink-50/30 pointer-events-none" />
+              <div className="relative flex items-start gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-red-500 flex items-center justify-center text-white shadow-lg flex-shrink-0">
+                  <MapPin size={24} strokeWidth={2.5} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-xs text-gray-600 uppercase tracking-wide mb-1">Location</div>
+                  <div className="text-sm text-gray-700 font-medium line-clamp-2">{location.address || 'Fetching location...'}</div>
                 </div>
               </div>
             </div>
-
-            {/* Status */}
-            {status.message && (
-<div className={`p-4 rounded-lg flex items-center ${status.type === 'success' ? 'bg-green-50 text-green-800' : status.type === 'info' ? 'bg-blue-50 text-blue-800' : 'bg-red-50 text-red-800'}`}>
-                {status.type === 'success' ? <CheckCircle size={20} className="mr-2" /> : <XCircle size={20} className="mr-2" />}
-                <div className="whitespace-pre-line">{status.message}</div>
-              </div>
-            )}
-
-            {/* Buttons */}
-            <div className="grid grid-cols-2 gap-4 pt-4">
-              <button
-                onClick={() => handleCheckin('in')}
-                disabled={
-                  loading ||
-                  !firebaseConfigured ||
-                  !wifiInfo.verified ||
-                  !employee.id ||
-                  !employeesMap[employee.id] ||
-                  employeesMap[employee.id]?.active === false
-                }
-                title={!wifiInfo.verified ? 'Only allowed to check-in when company WiFi is verified' : ''}
-                className="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
-              >
-                <LogIn className="mr-2" size={20} />
-                {loading ? 'Processing...' : 'Check In'}
-              </button>
-              <button
-                onClick={() => handleCheckin('out')}
-                disabled={
-                  loading ||
-                  !firebaseConfigured ||
-                  !wifiInfo.verified ||
-                  !employee.id ||
-                  !employeesMap[employee.id] ||
-                  employeesMap[employee.id]?.active === false
-                }
-                title={!wifiInfo.verified ? 'Only allowed to check-out when company WiFi is verified' : ''}
-                className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
-              >
-                <LogOut className="mr-2" size={20} />
-                {loading ? 'Processing...' : 'Check Out'}
-              </button>
-            </div>
-            {/* 
-            <button
-              onClick={() => setShowHistory(!showHistory)}
-              className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-6 rounded-lg transition flex items-center justify-center"
-            >
-              <History className="mr-2" size={20} />
-              {showHistory ? 'Ẩn lịch sử' : `Xem lịch sử check-in (${checkins.length})`}
-            </button> */}
           </div>
 
-          {/* History */}
-          {/* {showHistory && (
-            <div className="border-t bg-gray-50 p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-bold text-gray-800">Lịch sử check-in</h3>
-                <div className="flex items-center gap-2">
-                  <button onClick={clearHistory} className="text-sm px-3 py-1 bg-red-500 text-white rounded">Xóa toàn bộ</button>
-                </div>
+          {/* Status */}
+          {status.message && (
+            <div className={`relative backdrop-blur-xl border rounded-2xl shadow-lg overflow-hidden p-4 ${
+              status.type === 'success' ? 'bg-green-400/20 border-green-300/40' : 
+              status.type === 'info' ? 'bg-blue-400/20 border-blue-300/40' : 
+              'bg-red-400/20 border-red-300/40'
+            }`}>
+              <div className="relative flex items-center gap-2">
+                {status.type === 'success' ? <CheckCircle size={20} /> : <XCircle size={20} />}
+                <div className="whitespace-pre-line text-sm">{status.message}</div>
               </div>
+            </div>
+          )}
 
-              {checkins.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">Chưa có lịch sử check-in</p>
-              ) : (
-                <div className="space-y-3 max-h-96 overflow-y-auto">
-                  {checkins.map((checkin) => (
-                    <div key={checkin.firebaseId} className="bg-white p-4 rounded-lg border hover:shadow-md transition">
-                      <div className="flex justify-between items-start mb-2">
-<div className="flex items-center gap-3">
-                          {(checkin.photoURL || checkin.photoBase64) && (
-                            <img
-                              src={checkin.photoURL || checkin.photoBase64}
-                              alt="Check-in"
-                              className="w-16 h-16 rounded-lg object-cover border-2 border-gray-200"
-                            />
-                          )}
-                          <div>
-                            <div className="font-bold text-gray-800">{checkin.employeeName}</div>
-                            <div className="text-sm text-gray-500">ID: {checkin.employeeId}</div>
+          {/* Check-in Buttons - Large & Bold */}
+          <div className="grid grid-cols-2 gap-4 mt-8">
+            <button
+              onClick={() => handleCheckin('in')}
+              disabled={
+                loading ||
+                !firebaseConfigured ||
+                !wifiInfo.verified ||
+                !employee.id ||
+                !employeesMap[employee.id] ||
+                employeesMap[employee.id]?.active === false
+              }
+              className="relative backdrop-blur-xl bg-gradient-to-br from-green-400 to-emerald-500 border-2 border-white/40 rounded-3xl shadow-2xl overflow-hidden py-8 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 transition-all"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
+              <div className="relative flex flex-col items-center gap-3 text-white">
+                <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center">
+                  <LogIn size={36} strokeWidth={2.5} />
+                </div>
+                <span className="font-bold text-xl">Check In</span>
+              </div>
+            </button>
+
+            <button
+              onClick={() => handleCheckin('out')}
+              disabled={
+                loading ||
+                !firebaseConfigured ||
+                !wifiInfo.verified ||
+                !employee.id ||
+                !employeesMap[employee.id] ||
+                employeesMap[employee.id]?.active === false
+              }
+              className="relative backdrop-blur-xl bg-gradient-to-br from-orange-400 to-red-500 border-2 border-white/40 rounded-3xl shadow-2xl overflow-hidden py-8 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 transition-all"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
+              <div className="relative flex flex-col items-center gap-3 text-white">
+                <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center">
+                  <LogOut size={36} strokeWidth={2.5} />
+                </div>
+                <span className="font-bold text-xl">Check Out</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Camera Modal - Liquid Glass */}
+          {showCamera && (
+            <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+              <div className="relative backdrop-blur-2xl bg-white/95 border border-white/40 rounded-3xl max-w-md w-full overflow-hidden shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 via-purple-400/10 to-pink-400/10 pointer-events-none" />
+                
+                <div className="relative">
+                  <div className="flex justify-between items-center p-5 border-b border-gray-200/50">
+                    <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                      <Camera size={24} className="text-blue-600" />
+                      Take Photo
+                    </h2>
+                    <button 
+                      onClick={cancelCamera} 
+                      className="p-2 rounded-full hover:bg-gray-200/50 transition"
+                    >
+                      <X size={24} />
+                    </button>
+                  </div>
+
+                  <div className="p-5">
+                    {!capturedPhoto ? (
+                      <div className="space-y-4">
+                        <div className="relative bg-gray-900 rounded-2xl overflow-hidden aspect-[3/4]">
+                          <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover" />
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="w-48 h-64 border-4 border-white/50 rounded-full"></div>
                           </div>
                         </div>
-                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${checkin.type === 'in' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'}`}>
-                          {checkin.type === 'in' ? '🟢 Check In' : '🟠 Check Out'}
-                        </span>
-                      </div>
 
-                      <div className="text-sm text-gray-600 space-y-1">
-                        <div className="flex items-center">
-                          <Clock size={14} className="mr-2" /> {formatTimestamp(checkin.timestamp)}
-                        </div>
-                        <div className="flex items-center">
-                          <Wifi size={14} className="mr-2" /> {checkin.wifi?.ssid}
-                          {checkin.wifi?.verified && <span className="ml-2 text-green-600 text-xs">✅</span>}
-                        </div>
-                        <div className="text-xs bg-gray-50 p-2 rounded space-y-1 border">
-                          {checkin.wifi?.publicIP && (
-                            <div className="flex justify-between">
-                              <span className="text-gray-500">Public IP:</span>
-                              <span className="font-mono font-medium text-blue-600">{checkin.wifi.publicIP}</span>
-                            </div>
-                          )}
-                          {checkin.wifi?.localIP && (
-                            <div className="flex justify-between">
-                              <span className="text-gray-500">Local IP:</span>
-                              <span className="font-mono">{checkin.wifi.localIP}</span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="flex items-start">
-                          <MapPin size={14} className="mr-2 mt-0.5" />
-                          <span className="flex-1">{checkin.location?.address}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )} */}
+                        <p className="text-center text-gray-600 text-sm">📸 Position your face in the circle</p>
 
-          {/* Camera modal */}
-          {showCamera && (
-<div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-              <div className="bg-white rounded-2xl max-w-2xl w-full overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4 text-white flex justify-between items-center">
-                  <h2 className="text-xl font-bold">
-                    <Camera className="inline mr-2" size={24} /> Take a photo of your face
-                  </h2>
-                  <button onClick={cancelCamera} className="hover:bg-white hover:bg-opacity-20 p-2 rounded-lg transition">
-                    <X size={24} />
-                  </button>
-                </div>
-
-                <div className="p-6">
-                  {!capturedPhoto ? (
-                    <div className="space-y-4">
-                      <div className="relative bg-gray-900 rounded-lg overflow-hidden aspect-video">
-                        <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 border-4 border-blue-500 border-opacity-50 rounded-lg pointer-events-none">
-                          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-80 border-2 border-white border-opacity-50 rounded-full"></div>
-                        </div>
-                      </div>
-
-                      <div className="text-center text-gray-600 text-sm">📸 Place your face in the circle and press the capture button</div>
-
-                      <button onClick={capturePhoto} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg transition flex items-center justify-center">
-                        <Camera className="mr-2" size={20} /> Take Photo
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      <div className="relative bg-gray-100 rounded-lg overflow-hidden">
-                        <img src={capturedPhoto} alt="Captured" className="w-full h-auto" />
-                      </div>
-
-                      <div className="text-center text-gray-600 text-sm">✅ Photo captured. Please review and confirm.</div>
-
-                      <div className="grid grid-cols-2 gap-4">
-                        <button onClick={retakePhoto} className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition">Retake</button>
-                        <button onClick={confirmCheckin} disabled={loading} className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed">
-                          {loading ? 'Saving...' : 'Confirm'}
+                        <button 
+                          onClick={capturePhoto} 
+                          className="w-full relative backdrop-blur-xl bg-gradient-to-br from-blue-500 to-purple-600 border border-white/30 rounded-2xl shadow-xl p-4 text-white font-bold active:scale-95 transition-transform"
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none rounded-2xl" />
+                          <div className="relative flex items-center justify-center gap-2">
+                            <Camera size={20} />
+                            <span>Capture</span>
+                          </div>
                         </button>
                       </div>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="relative rounded-2xl overflow-hidden">
+                          <img src={capturedPhoto} alt="Captured" className="w-full h-auto" />
+                        </div>
+
+                        <p className="text-center text-green-600 text-sm font-medium">✅ Photo captured successfully</p>
+
+                        <div className="grid grid-cols-2 gap-3">
+                          <button 
+                            onClick={retakePhoto} 
+                            className="relative backdrop-blur-xl bg-gray-400/80 border border-white/30 rounded-2xl shadow-lg p-3 text-white font-bold active:scale-95 transition-transform"
+                          >
+                            Retake
+                          </button>
+                          <button 
+                            onClick={confirmCheckin} 
+                            disabled={loading}
+                            className="relative backdrop-blur-xl bg-gradient-to-br from-green-500 to-emerald-600 border border-white/30 rounded-2xl shadow-lg p-3 text-white font-bold disabled:opacity-50 active:scale-95 transition-transform"
+                          >
+                            {loading ? 'Saving...' : 'Confirm'}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-</div>
-          )}
-          {/* Hidden canvas for capture */}
-          <canvas ref={canvasRef} style={{ display: 'none' }} />
-        </div>
+            </div>
+        )}
+        
+        <canvas ref={canvasRef} style={{ display: 'none' }} />
       </div>
-    </div>
+      
+      <BottomNav />
     </>
   );
 }

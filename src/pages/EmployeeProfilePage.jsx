@@ -19,7 +19,7 @@ import {
   X
 } from 'lucide-react';
 import { useToast } from '../components/ui/useToast';
-import EmployeeNavbar from '../components/employee/EmployeeNavbar';
+import BottomNav from '../components/employee/BottomNav';
 
 export default function EmployeeProfilePage() {
   const navigate = useNavigate();
@@ -204,11 +204,11 @@ export default function EmployeeProfilePage() {
 
   return (
     <>
-      <EmployeeNavbar />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 pb-24 p-4">
         <div className="max-w-6xl mx-auto space-y-6">
           {/* Header */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="relative backdrop-blur-xl bg-white/90 border border-white/40 rounded-3xl shadow-2xl overflow-hidden p-6">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-purple-50/50 pointer-events-none" />
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-4">
                 <div className="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center">
@@ -255,7 +255,8 @@ export default function EmployeeProfilePage() {
 
         {/* Personal Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="relative backdrop-blur-xl bg-white/90 border border-white/40 rounded-3xl shadow-xl overflow-hidden p-6">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent pointer-events-none" />
             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
               <Briefcase size={20} className="text-indigo-600" />
               Work Information
@@ -284,8 +285,9 @@ export default function EmployeeProfilePage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <div className="relative backdrop-blur-xl bg-white/90 border border-white/40 rounded-3xl shadow-xl overflow-hidden p-6">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-50/30 to-transparent pointer-events-none" />
+            <h2 className="relative text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
               <User size={20} className="text-indigo-600" />
               Personal Information
             </h2>
@@ -344,7 +346,8 @@ export default function EmployeeProfilePage() {
         </div>
 
         {/* Salary Info */}
-        <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg shadow-md p-6 text-white">
+        <div className="relative backdrop-blur-xl bg-gradient-to-r from-green-400/90 to-emerald-500/90 border border-white/40 rounded-3xl shadow-2xl overflow-hidden p-6 text-white">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
             <DollarSign size={24} />
             Salary Information
@@ -374,8 +377,9 @@ export default function EmployeeProfilePage() {
         </div>
 
         {/* Work Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="relative backdrop-blur-xl bg-white/90 border border-white/40 rounded-2xl shadow-xl overflow-hidden p-4">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-transparent pointer-events-none" />
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Total Days</p>
@@ -385,8 +389,9 @@ export default function EmployeeProfilePage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
+          <div className="relative backdrop-blur-xl bg-white/90 border border-white/40 rounded-2xl shadow-xl overflow-hidden p-4">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent pointer-events-none" />
+            <div className="relative flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Total Hours</p>
                 <p className="text-3xl font-bold text-blue-600">{statistics.totalHours.toFixed(1)}h</p>
@@ -395,8 +400,9 @@ export default function EmployeeProfilePage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
+          <div className="relative backdrop-blur-xl bg-white/90 border border-white/40 rounded-2xl shadow-xl overflow-hidden p-4">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 to-transparent pointer-events-none" />
+            <div className="relative flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">On-Time Rate</p>
                 <p className="text-3xl font-bold text-green-600">{statistics.onTimeRate.toFixed(1)}%</p>
@@ -405,7 +411,8 @@ export default function EmployeeProfilePage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="relative backdrop-blur-xl bg-white/90 border border-white/40 rounded-2xl shadow-xl overflow-hidden p-4">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 to-transparent pointer-events-none" />
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Total OT</p>
@@ -417,7 +424,8 @@ export default function EmployeeProfilePage() {
         </div>
 
         {/* Recent Check-ins */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="relative backdrop-blur-xl bg-white/90 border border-white/40 rounded-3xl shadow-xl overflow-hidden p-6">
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-50/30 to-transparent pointer-events-none" />
           <h2 className="text-xl font-bold text-gray-800 mb-4">Recent Check-in History</h2>
           <div className="overflow-x-auto">
             <table className="min-w-full">
@@ -465,6 +473,8 @@ export default function EmployeeProfilePage() {
         </div>
       </div>
     </div>
+    
+    <BottomNav />
     </>
   );
 }
